@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/field"
+    tools:context=".MainActivity">
+
+   <!-- <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Upload your X-ray Image"
+        android:textSize="75px"
+        android:textColor="@color/black"
+        android:layout_alignParentTop = "true"
+        android:layout_centerHorizontal = "true"
+        android:layout_marginTop="50dp" />-->
+
+    <LinearLayout
+        android:id="@+id/btn1_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:padding="10dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/use_photo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/round_button"
+            android:text="album" />
+
+        <Button
+            android:id="@+id/start_camera"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/round_button"
+            android:text="photographing" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/btn2_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/btn1_ll"
+        android:padding="10dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/load_model"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:background="@drawable/round_button"
+            android:text="Loading the model" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/result_text"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_margin="10dp"
+        android:layout_above="@id/btn2_ll"
+        android:hint="The forecast results will be displayed here"
+        android:inputType="textMultiLine"
+        android:textSize="16sp"
+        tools:ignore="TextViewEdits" />
+
+    <ImageView
+        android:id="@+id/show_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/result_text"
+        android:src="@drawable/image"
+        android:layout_alignParentTop="true" />
+</RelativeLayout>
