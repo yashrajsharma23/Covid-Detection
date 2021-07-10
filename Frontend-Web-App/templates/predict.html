@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Covid detection using X-ray image</title>
+    <style>
+        * {
+            font-size: 30px;
+        }
+    </style>
+</head>
+<body>
+<input id="image-selector" type="file">
+<button id="predict-button">Predict</button>
+<p style="font-weight:bold">Predictions</p>
+<p>Negative: <span id="Covid-Negative"></span></p>
+<p>Positive: <span id="Covid-Positive"></span></p>
+<img id="selected-image" src=""/>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    console.log('Inside Scrip');
+    let base64Image;
+    $("#image-selector").change(function () {
+        let reader = new FileReader();
+        console.log('Reading image');
+        reader.onload = function (e) {
+            let dataURL = reader.result;
+            $('#selected-image').attr("src", dataURL);
+            if(dataURL.includes("jpg")){
+                base64Image = dataURL.replace("data:image/jpg;base64,", "");
+            }else if(dataURL.includes("jpeg")){
+                base64Image = dataURL.replace("data:image/jpeg;base64,", "");
+            }else if(dataURL.includes("png")){
+                base64Image = dataURL.replace("data:image/png;base64,", "");
+            }else{
+                base64Image = dataURL;//.replace("data:image/png;base64,", "");
+            }
+
+            console.log(base64Image);
+        }
+        reader.readAsDataURL($("#image-selector")[0].files[0]);
+        $("#Covid-Negative").text("");
+        $("#Covid-Positive").text("");
+    });
+
+    $("#predict-button").click(function () {
+        let message = {
+            image: base64Image
+        }
+        console.log(message);
+        $.post("http://127.0.0.1:5000/predict", JSON.stringify(message), function (response) {
+            $("#Covid-Negative").text(response.prediction.Negative.toFixed(6));
+            $("#Covid-Positive").text(response.prediction.Positive.toFixed(6));
+            console.log(response);
+        });
+    });
+</script>
+</body>
+</html>
+
