@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 model_index = which;
-                load_model("Custom_6");//PADDLE_MODEL[model_index]);
+                load_model("Custom_Quant_11");//PADDLE_MODEL[model_index]);
                 dialog.dismiss();
             }
         });
@@ -277,8 +277,8 @@ public class MainActivity extends AppCompatActivity {
             //System.arraycopy(labelProbArray[0], 0, results, 0, labelProbArray.length);
             // show predict result and time
             int r = get_max_result(results);
-            //String show_text = "result：" + r + "\nname：" + resultLabel.get(r) + "\nprobability：" + results[r]*100 + "\ntime：" + time + "ms";
-            String show_text = "result：" + r + "\nname：" + resultLabel.get(r) + "\ntime：" + time + "ms";
+            String show_text = "result：" + r + "\nname：" + resultLabel.get(r) + "\nprobability：" + results[r]*100 + "\ntime：" + time + "ms";
+            //String show_text = "result：" + r + "\nname：" + resultLabel.get(r) + "\ntime：" + time + "ms";
             result_text.setText(show_text);
         } catch (Exception e) {
             System.out.println("Error Predicting result:"+e);
