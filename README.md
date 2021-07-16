@@ -12,6 +12,7 @@ and save the downloaded model in below path,
 
 Path: 
 Mobile App[save .tflite model]: Covid-Detection/Frontend-Android/app/src/main/assets/
+
 Web App[save .h5 model]: Covid-Detection/Frontend-web-App/model/
 
 Web App UI:
