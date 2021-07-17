@@ -1,60 +1,46 @@
 <!DOCTYPE html>
-<html>
+{#https://www.codingnepalweb.com/drag-drop-file-upload-feature-javascript/#}
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Covid detection using X-ray image</title>
-    <style>
-        * {
-            font-size: 30px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+
 </head>
 <body>
-<input id="image-selector" type="file">
-<button id="predict-button">Predict</button>
-<p style="font-weight:bold">Predictions</p>
-<p>Negative: <span id="Covid-Negative"></span></p>
-<p>Positive: <span id="Covid-Positive"></span></p>
-<img id="selected-image" src=""/>
+<h1 style="margin: 20px 10px; margin-bottom: 2px; color: white; text-align:center">AIML-Capstone: Team Matrix Squad</h1>
+<p style="color: white; font-size: 16px;text-align:center">Fatima | Gursanjam | Rupinder | Yashraj</p>
 
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script>
-    console.log('Inside Scrip');
-    let base64Image;
-    $("#image-selector").change(function () {
-        let reader = new FileReader();
-        console.log('Reading image');
-        reader.onload = function (e) {
-            let dataURL = reader.result;
-            $('#selected-image').attr("src", dataURL);
-            if(dataURL.includes("jpg")){
-                base64Image = dataURL.replace("data:image/jpg;base64,", "");
-            }else if(dataURL.includes("jpeg")){
-                base64Image = dataURL.replace("data:image/jpeg;base64,", "");
-            }else if(dataURL.includes("png")){
-                base64Image = dataURL.replace("data:image/png;base64,", "");
-            }else{
-                base64Image = dataURL;//.replace("data:image/png;base64,", "");
-            }
+<h2 style="margin: 20px 10px; margin-top: 5px; margin-bottom: 2px; color: white; text-align:center">Covid Detection using X-ray Images</h2>
+<p style="color: white; font-size: 22px; margin-top: 5px;
+margin-left: 10px;margin-bottom: 5px; text-align:center">Drag & Drop X-ray Image below</p>
+<div class="drag-area" id="drag-tag" style="margin:0 auto; margin-bottom: 10px">
+    <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
+    <header>Drag & Drop to Upload File</header>
+    <span>OR</span>
+    <button>Browse File</button>
+    <input type="file" id="myfile" hidden>
+</div>
 
-            console.log(base64Image);
-        }
-        reader.readAsDataURL($("#image-selector")[0].files[0]);
-        $("#Covid-Negative").text("");
-        $("#Covid-Positive").text("");
-    });
+<div id="loading" style="margin-bottom: 2px"></div>
 
-    $("#predict-button").click(function () {
-        let message = {
-            image: base64Image
-        }
-        console.log(message);
-        $.post("http://127.0.0.1:5000/predict", JSON.stringify(message), function (response) {
-            $("#Covid-Negative").text(response.prediction.Negative.toFixed(6));
-            $("#Covid-Positive").text(response.prediction.Positive.toFixed(6));
-            console.log(response);
-        });
-    });
-</script>
+<div class="row-centered" id="btn-area" style="margin:auto; horiz-align: center; display: inline-list-item;" hidden="hidden">
+    <input type="submit" class="app-button"
+           id="predict-button" onclick="window.predict()" value="Predict">
+
+    <input type="submit" class="app-button"
+           id="reset-button" onclick="window.reset()" value="Reset">
+
+</div>
+
+<p style="color: white; font-size: 26px; font-weight:bold; text-align:center" id="pred-tag" hidden>Predictions</p>
+<p style="color: green; font-size: 24px; font-weight:bold; max-width: 100%; text-align:center" id="neg-tag" hidden>Negative: <span style="font-size: 24px" id="Covid-Negative"></span></p>
+<p style="color: red; font-size: 24px; font-weight:bold; max-width: 100%; text-align:center" id="pos-tag" hidden>Positive: <span style="font-size: 24px" id="Covid-Positive"></span></p>
+<p style="color: red; font-size: 24px; font-weight:bold; text-align:center" id="error-tag" hidden>Result error: <span style="font-size: 24px" id="error-disp"></span></p>
+
+<script src="../static/js/script.js"></script>
 </body>
 </html>
 
