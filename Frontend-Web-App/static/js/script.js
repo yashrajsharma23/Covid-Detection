@@ -4,6 +4,11 @@ const dropArea = document.querySelector(".drag-area"),
     button = dropArea.querySelector("button"),
     input = dropArea.querySelector("input");
 
+var btn_area = document.getElementById("btn-area");
+
+var predict_btn = document.getElementById('predict-button');
+var reset_btn = document.getElementById('reset-button');
+
 var pred_tag = document.getElementById('pred-tag');
 
 var negative = document.getElementById('Covid-Negative');
@@ -48,8 +53,12 @@ let fileReader = new FileReader(); //creating new FileReader object
 let imgTag;
 
 function showFile() {
+    btn_area.style.display = 'block';
+    predict_btn.style.display='block';
+    reset_btn.style.display='none';
+
     error_fun(null);
-   let fileType = file.type; //getting selected file type
+    let fileType = file.type; //getting selected file type
     let validExtensions = ["image/jpeg", "image/JPEG", "image/JPG", "image/jpg", "image/png"]; //adding some valid image extensions in array
     console.log(fileType)
     if (validExtensions.includes(fileType)) { //if user selected file is an image file
@@ -83,14 +92,43 @@ function showFile() {
 let base64Image;
 
 function reset() {
+    btn_area.style.display = 'none';
+
+    predict_btn.style.display='block';
+    reset_btn.style.display='none';
+
     base64Image = null
     let imgTag = `<img src="" alt="image" hidden style="visibility: hidden">`;
-    dropArea.innerHTML = "";//imgTag;
+    let tag = '<div class="drag-area" id="drag-tag" style="margin:0 auto; margin-bottom: 10px">\n' +
+        '    <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>\n' +
+        '    <header>Drag & Drop to Upload File</header>\n' +
+        '    <span>OR</span>\n' +
+        '    <button>Browse File</button>\n' +
+        '    <input type="file" id="myfile" hidden>\n' +
+        '</div>\n';
+    dropArea.innerHTML = tag;//imgTag;
+
+    dropArea.classList.add("active");
+    dragText.textContent = "Release to Upload File";
 
     error_fun(null)
 }
 
+const loader = document.querySelector('#loading');
+function displayLoading(){
+    loader.classList.add('display');
+    setTimeout(()=>{
+        loader.classList.remove('display');
+    }, 5000);
+}
+
+function hideLoading(){
+    loader.classList.remove('display');
+}
+
 function predict() {
+    predict_btn.style.display='none';
+    reset_btn.style.display='block';
 
     error.style.display = "none";
 
@@ -99,6 +137,8 @@ function predict() {
         error_fun('Please Upload Image.')
         return;
     }
+    displayLoading();
+
     let message = {
         image: base64Image
         //image_type: fileType
@@ -123,26 +163,33 @@ function predict() {
                 "<br>Please try again later or Retry with different image");
             // throw new Error("Could not reach the API: " + response.statusText);
         }
+        hideLoading();
     }).then(function (data) {
     }).catch(function (error_msg) {
         error_fun(error_msg.message);
         console.log('error catch: ', error_msg.message);
+        hideLoading();
     });
 
 }
 
 function success(json) {
     pred_tag.style.display = "block";
-    positive.style.display = "block";
-    negative.style.display = "block";
-    neg_tag.style.display = "block";
-    pos_tag.style.display = "block";
 
     error_tag.style.display = "none";
     error.style.display = "none";
+    if(json.prediction.isNegative == true){
+        negative.style.display = "block";
+        neg_tag.style.display = "block";
+        negative.innerText = json.prediction.response;
+    }else{
+        positive.style.display = "block";
+        pos_tag.style.display = "block";
+        positive.innerText = json.prediction.response;
+    }
 
-    negative.innerText = json.prediction.Negative.toFixed(2);
-    positive.innerText = json.prediction.Positive.toFixed(2);
+    // negative.innerText = json.prediction.Negative.toFixed(2);
+    // positive.innerText = json.prediction.Positive.toFixed(2);
 }
 
 function error_fun(message) {

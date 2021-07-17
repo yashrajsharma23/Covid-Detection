@@ -57,12 +57,28 @@ def predict():
     image = Image.open(io.BytesIO(decoded))
     processed_image = preprocess_image(image, target_size=(256, 256))
 
+    respone = '';
+    isNegative = True;
+
     prediction = model.predict(processed_image).tolist()
+    negative = prediction[0][0] * 100
+    positive = prediction[0][1] * 100
+
+    if float(prediction[0][0])>float(prediction[0][1]):
+        #respone = 'Patient X-ray report seems {}% Covid Negative'.format(negative)
+        respone = 'Patient X-ray report seems Covid Negative'
+        isNegative=True
+    else:
+        #respone = 'Patient X-ray report seems {}% Covid Positive'.format(positive)
+        respone = 'Patient X-ray report seems Covid Positive'
+        isNegative = False
 
     response = {
         'prediction': {
-            'Negative': prediction[0][0],
-            'Positive': prediction[0][1]
+            'response': respone,
+            'isNegative': isNegative
+            # 'Negative': prediction[0][0],
+            # 'Positive': prediction[0][1]
         }
     }
     print(response)
