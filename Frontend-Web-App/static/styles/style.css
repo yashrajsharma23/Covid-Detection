@@ -30,7 +30,7 @@ body {
     padding-top: 0;
     justify-content: center;
     vertical-align: middle;
-    background-image: url("/static/covid_bg.jpg");
+    background-image: url("/static/covid_bg_4.jpg");
     background-size: 100vw 100vh;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -39,7 +39,20 @@ body {
     margin-right: auto;
     /*background: #5256ad;*/
 }
-
+p{
+    font-size: 22px;
+    color: white;
+}
+#h1-tag{
+    color: white;
+}
+#drag-drop-txt{
+    font-size: 22px;
+    color: white;
+}
+#h2-tag{
+    color: white;
+}
 .drag-area {
     border: 5px dashed white;
     height: 550px;
@@ -79,12 +92,13 @@ body {
     padding: 10px 25px;
     font-size: 20px;
     font-weight: 500;
-    border: none;
     outline: none;
-    background: white;
-    color: black;
+    /*background: white;*/
+    color: white;
     border-radius: 5px;
     cursor: pointer;
+     border: 1px solid #12c4a1;
+     background: #12c4a1;
 }
 
 .drag-area img {
@@ -115,14 +129,35 @@ body {
     word-wrap: break-word;
     display: inline-block;
     max-width: 100%;
+    font-size: 22px;
     min-height: 2em;
     word-break: break-all;
+}
+.Covid-Positive {
+    word-wrap: break-word;
+    display: inline-block;
+    max-width: 100%;
+    min-height: 2em;
+    font-size: 22px;
+    word-break: break-all;
+}
+#load-model {
+ color: white;
+ font-size: 30px;
+ margin:0 auto;
+ padding: 10px;
+ border-radius: 25px;
+ border: 1px solid #298d04;
+ background: #298d04;
+ cursor:pointer;
+ /*url(image) 0 0 no-repeat;*/
 }
 #predict-button {
  color: white;
  font-size: 30px;
  margin:0 auto;
  padding: 10px;
+    display: none;
  border-radius: 25px;
  border: 1px solid #2866bf;
  background: #2866bf;
@@ -134,11 +169,25 @@ body {
  padding: 10px;
  font-size: 30px;
  margin:0 auto;
+    display: none;
  border-radius: 25px;
  border: 1px solid  #ff4d4f;
  background: #ff4d4f;
  cursor:pointer;
 }
+#pred-tag{
+    font-size: 22px;
+}
+#neg-tag{
+    font-size: 22px;
+}
+#pos-tag{
+    font-size: 22px;
+}
+#error-tag{
+    font-size: 22px;
+}
+
 
 #loading{
     width: 3rem;
@@ -162,10 +211,226 @@ body {
     }
 }
 
-/*.neg-tag {*/
-/*    word-wrap: break-word;*/
-/*    display: inline-grid;*/
-/*    max-width: 100%;*/
-/*    min-height: 2em;*/
-/*    word-break: break-all;*/
+/*-----------------------------------------------------SETTING MOBILE PHONE COMPATIBLE------------------------------------------*/
+@media  screen and (max-width: 481px) {
+
+* {
+    /*margin: 0;*/
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+    margin:0 auto;
+}
+.row-centered {
+    text-align: center;
+}
+
+.col-centered {
+    display: inline-block;
+    float: none;
+    /* reset the text-align */
+    text-align: left;
+    /* inline-block space fix */
+    margin-right: -4px;
+}
+
+body {
+    height: 100%;
+    width: 100%;
+    top: 0px;
+    bottom: 0px;
+    align-items: center;
+    padding: 20px 20px 20px;
+    padding-top: 0;
+    justify-content: center;
+    vertical-align: middle;
+    background-image: url("/static/covid_bg_3.jpg");
+    background-size: 100vw 100vh;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    position: relative ;
+    margin-left: auto;
+    margin-right: auto;
+    /*background: #5256ad;*/
+}
+p{
+    font-size: 22px;
+    color: black;
+}
+.drag-area {
+    border: 2px dashed black;
+    height: 200px;
+    width: 250px;
+    margin: 30px 30px 0px 0px;
+    margin-top: 30px;
+    border-radius: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.drag-area.active {
+    border: 1px solid black;
+}
+
+.drag-area .icon {
+    font-size: 40px;
+    color: black;
+}
+
+.drag-area header {
+    font-size: 16px;
+    color: black;
+}
+
+.drag-area span {
+    font-size: 16px;
+    color: black;
+    margin: 10px 0 15px 0;
+}
+
+.drag-area button {
+    padding: 10px 20px;
+    font-size: 16px;
+    width: 150px;
+    outline: none;
+    /*background: white;*/
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+     border: 1px solid #12c4a1;
+     background: #12c4a1;
+}
+
+.drag-area img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+
+/*#predict-button{
+  padding: 20px 20px;
+  width: 900px;
+  object-fit: cover;
+}*/
+
+.app-button {
+    width: 150px;
+    display: inline-block;
+}
+
+.row {
+    /*the same margin which is every button have, it is for small screen, and if you have many buttons.*/
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+#h1-tag{
+    font-size: 15px;
+    color: black;
+}
+/*#name-tag{*/
+/*    font-size: 10px;*/
 /*}*/
+#h2-tag{
+    font-size: 15px;
+    color: black;
+}
+#drag-drop-txt{
+    font-size: 12px;
+    margin-top: 10px;
+    color: black;
+}
+#pred-tag{
+    font-size: 16px;
+    color: black;
+}
+#neg-tag{
+    font-size: 16px;
+}
+#pos-tag{
+    font-size: 16px;
+}
+#error-tag{
+    font-size: 16px;
+
+}
+.Covid-Negative {
+    word-wrap: break-word;
+    display: inline-block;
+    max-width: 100%;
+    min-height: 2em;
+    font-size: 16px;
+    word-break: break-all;
+}
+.Covid-Positive {
+    word-wrap: break-word;
+    display: inline-block;
+    max-width: 100%;
+    min-height: 2em;
+    font-size: 16px;
+    word-break: break-all;
+}
+.error-disp {
+    font-size: 16px;
+    color: black;
+}
+#load-model {
+ color: white;
+ font-size: 15px;
+ margin:0 auto;
+ padding: 10px;
+ border-radius: 25px;
+ border: 1px solid #298d04;
+ background: #298d04;
+ cursor:pointer;
+ /*url(image) 0 0 no-repeat;*/
+}
+#predict-button {
+ color: white;
+ font-size: 15px;
+ margin:0 auto;
+ padding: 10px;
+    display: none;
+ border-radius: 25px;
+ border: 1px solid #2866bf;
+ background: #2866bf;
+ cursor:pointer;
+ /*url(image) 0 0 no-repeat;*/
+}
+#reset-button{
+   color: white;
+ padding: 10px;
+ font-size: 15px;
+ margin:0 auto;
+    display: none;
+ border-radius: 25px;
+ border: 1px solid  #ff4d4f;
+ background: #ff4d4f;
+ cursor:pointer;
+}
+
+#loading{
+    width: 2rem;
+    height: 2rem;
+    border: 5px solid #2866bf;
+    border-top: 6px solid #ff4d4f;
+    border-radius: 100%;
+    margin: auto;
+    visibility: hidden;
+    animation: spin 1s infinite linear;
+}
+#loading.display{
+    visibility: visible;
+}
+@keyframes spin {
+    from{
+        transform: rotate(0deg);
+    }
+    to{
+        transform: rotate(360deg);
+    }
+}
+}

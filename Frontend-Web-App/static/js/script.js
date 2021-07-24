@@ -1,11 +1,16 @@
 //selecting all required elements
-const dropArea = document.querySelector(".drag-area"),
+let dropArea = document.querySelector(".drag-area"),
     dragText = dropArea.querySelector("header"),
     button = dropArea.querySelector("button"),
     input = dropArea.querySelector("input");
 
 var btn_area = document.getElementById("btn-area");
 
+var isModelLoaded=false
+var isImageLoaded =false
+var isFirstTimeLoaded = false
+
+var load_model = document.getElementById('load-model');
 var predict_btn = document.getElementById('predict-button');
 var reset_btn = document.getElementById('reset-button');
 
@@ -51,11 +56,22 @@ dropArea.addEventListener("drop", (event) => {
 let fileReader = new FileReader(); //creating new FileReader object
 
 let imgTag;
+let default_html;
 
 function showFile() {
+    if(isFirstTimeLoaded===false) {
+        default_html = dropArea.innerHTML
+    }
     btn_area.style.display = 'block';
-    predict_btn.style.display='block';
-    reset_btn.style.display='none';
+    if(isModelLoaded){
+        load_model.style.display='none';
+        predict_btn.style.display='block';
+        reset_btn.style.display='none';
+    }else{
+        load_model.style.display='block';
+        predict_btn.style.display='none';
+        reset_btn.style.display='none';
+    }
 
     error_fun(null);
     let fileType = file.type; //getting selected file type
@@ -82,10 +98,12 @@ function showFile() {
             }
         }
         fileReader.readAsDataURL(file);
+        isImageLoaded = true;
     } else {
         alert("This is not an Image File!");
         dropArea.classList.remove("active");
         dragText.textContent = "Drag & Drop to Upload File";
+        isImageLoaded = false;
     }
 }
 
@@ -94,25 +112,62 @@ let base64Image;
 function reset() {
     btn_area.style.display = 'none';
 
+    load_model.style.display='none';
     predict_btn.style.display='block';
     reset_btn.style.display='none';
+    isImageLoaded = false;
 
     base64Image = null
-    let imgTag = `<img src="" alt="image" hidden style="visibility: hidden">`;
-    let tag = '<div class="drag-area" id="drag-tag" style="margin:0 auto; margin-bottom: 10px">\n' +
-        '    <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>\n' +
-        '    <header>Drag & Drop to Upload File</header>\n' +
-        '    <span>OR</span>\n' +
-        '    <button>Browse File</button>\n' +
-        '    <input type="file" id="myfile" hidden>\n' +
-        '</div>\n';
-    dropArea.innerHTML = tag;//imgTag;
-
-    dropArea.classList.add("active");
-    dragText.textContent = "Release to Upload File";
-
+    // let imgTag = `<img src="" alt="image" hidden style="visibility: hidden">`;
+    // let tag = '<div class="drag-area" id="drag-tag" style="margin:0 auto; margin-bottom: 10px">\n' +
+    //     '    <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>\n' +
+    //     '    <header>Drag & Drop to Upload File</header>\n' +
+    //     '    <span>OR</span>\n' +
+    //     '    <button>Browse File</button>\n' +
+    //     '    <input type="file" id="myfile" hidden>\n' +
+    //     '</div>\n';
+      dropArea.innerHTML = default_html;//tag;//imgTag;
+      reset_click_events();
     error_fun(null)
 }
+
+    function reset_click_events(){
+        dragText = dropArea.querySelector("header");
+        button = dropArea.querySelector("button");
+        input = dropArea.querySelector("input");
+
+        dropArea.classList.add("active");
+        dragText.textContent = "Drag & Drop to Upload File";
+
+        button.onclick = () => {
+            input.click(); //if user click on the button then the input also clicked
+        }
+
+        input.addEventListener("change", function () {
+            //getting user select file and [0] this means if user select multiple files then we'll select only the first one
+            file = this.files[0];
+            dropArea.classList.add("active");
+            showFile(); //calling function
+        });
+        //If user Drag File Over DropArea
+        dropArea.addEventListener("dragover", (event) => {
+            event.preventDefault(); //preventing from default behaviour
+            dropArea.classList.add("active");
+            dragText.textContent = "Release to Upload File";
+        });
+        //If user leave dragged File from DropArea
+        dropArea.addEventListener("dragleave", () => {
+            dropArea.classList.remove("active");
+            dragText.textContent = "Drag & Drop to Upload File";
+        });
+        //If user drop File on DropArea
+        dropArea.addEventListener("drop", (event) => {
+            event.preventDefault(); //preventing from default behaviour
+            //getting user select file and [0] this means if user select multiple files then we'll select only the first one
+            file = event.dataTransfer.files[0];
+            showFile(); //calling function
+        });
+    }
 
 const loader = document.querySelector('#loading');
 function displayLoading(){
@@ -126,7 +181,59 @@ function hideLoading(){
     loader.classList.remove('display');
 }
 
+function loadModel(){
+    displayLoading();
+
+    btn_area.style.display='none';
+    load_model.style.display='none';
+    predict_btn.style.display='none';
+    reset_btn.style.display='none';
+
+    error.style.display = "none";
+
+     let message = {
+        data: ""
+        //image_type: fileType
+    }
+
+    const url = "http://127.0.0.1:5000/loadModel";
+    // const url = "https://covid-detection.azurewebsites.net/loadModel"
+
+    const other_params = {
+        headers: {"content-type": "application/json;charset=UTF-8"},
+        body: JSON.stringify(message),
+        method: "POST"
+    };
+
+    fetch(url, other_params).then(function (response) {
+        if (response.ok) {
+            response.json().then(json => {
+                console.log(json)
+                isModelLoaded=true;
+                var response = json.response
+                if(response.hasOwnProperty("success")){
+                    success_load_model(json.response.success)
+                }else{
+                    error_fun(json.response.error);
+                }
+            });
+        } else {
+            error_fun("Could not reach the API: " + response.statusText+"." +
+                "<br>Something went wrong,\bPlease try again later");
+            // throw new Error("Could not reach the API: " + response.statusText);
+        }
+    }).then(function (data) {
+        print(data.toString())
+    }).catch(function (error_msg) {
+        error_fun(error_msg.message);
+        console.log('error catch: ', error_msg);
+    });
+}
+
 function predict() {
+    pred_tag.innerText = 'Predictions';
+
+    load_model.style.display='none';
     predict_btn.style.display='none';
     reset_btn.style.display='block';
 
@@ -143,8 +250,8 @@ function predict() {
         image: base64Image
         //image_type: fileType
     }
-    // console.log(message);
     const url = "http://127.0.0.1:5000/predict";
+    // const url = "https://covid-detection.azurewebsites.net/predict"
 
     const other_params = {
         headers: {"content-type": "application/json;charset=UTF-8"},
@@ -163,14 +270,35 @@ function predict() {
                 "<br>Please try again later or Retry with different image");
             // throw new Error("Could not reach the API: " + response.statusText);
         }
-        hideLoading();
+
     }).then(function (data) {
     }).catch(function (error_msg) {
         error_fun(error_msg.message);
         console.log('error catch: ', error_msg.message);
-        hideLoading();
     });
 
+}
+
+function success_load_model(json) {
+    btn_area.style.display='block';
+
+    pred_tag.style.display = "block";
+
+    error_tag.style.display = "none";
+    error.style.display = "none";
+
+    load_model.style.display='none';
+    if(isImageLoaded==true) {
+        predict_btn.style.display = 'block';
+    }else{
+        predict_btn.style.display = 'none';
+    }
+    reset_btn.style.display='none';
+
+    pred_tag.innerText = json;
+    hideLoading();
+    // negative.innerText = json.prediction.Negative.toFixed(2);
+    // positive.innerText = json.prediction.Positive.toFixed(2);
 }
 
 function success(json) {
@@ -187,6 +315,7 @@ function success(json) {
         pos_tag.style.display = "block";
         positive.innerText = json.prediction.response;
     }
+    hideLoading();
 
     // negative.innerText = json.prediction.Negative.toFixed(2);
     // positive.innerText = json.prediction.Positive.toFixed(2);
@@ -207,4 +336,5 @@ function error_fun(message) {
         error_tag.style.display = "none";
         error.style.display = "none";
     }
+    hideLoading();
 }
