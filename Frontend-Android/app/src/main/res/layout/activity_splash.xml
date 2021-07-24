@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/main_bg">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+    <TextView
+        android:id="@+id/subject"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="AIML-Capstone"
+        android:layout_gravity="center"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/black"
+        android:textSize="24dp" />
+
+        <TextView
+            android:id="@+id/app_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="COVID DETECTION (Using x-ray)"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:layout_below="@+id/subject"
+            android:textSize="22dp" />
+
+        <TextView
+        android:id="@+id/instructor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:text="Instructor - Prof. Vahid Hadavi"
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold"
+        android:layout_above="@+id/group"
+        android:textColor="@color/black"
+        android:layout_gravity="center"
+        android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Fatima | Gursanjam | Rupinder | Yashraj"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:gravity="bottom"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@+id/lambton"
+            app:layout_constraintTop_toBottomOf="@+id/title_2"
+            android:layout_gravity="center"
+            android:textSize="16dp" />
+
+    <TextView
+        android:id="@+id/lambton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="3dp"
+        android:text="Lambton College"
+        android:textColor="@color/black"
+        android:gravity="bottom"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/toronto"
+        android:layout_gravity="center"
+        android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/toronto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:text="Toronto"
+            android:textColor="@color/black"
+            android:gravity="bottom"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@+id/all_rights_reserved"
+            android:layout_gravity="center"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/all_rights_reserved"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:text="All rights reserved"
+            android:textColor="@color/black"
+            android:gravity="bottom"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center"
+            android:textSize="14dp" />
+
+
+
+   <!-- <ImageView
+        android:id="@+id/gif"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>-->
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

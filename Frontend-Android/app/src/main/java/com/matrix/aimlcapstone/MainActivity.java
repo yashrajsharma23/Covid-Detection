@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,8 +59,11 @@ public class MainActivity extends AppCompatActivity {
     private List<String> resultLabel = new ArrayList<>();
     private Interpreter tflite = null;
 
+    int LOAD_MODEL = 0 , UPLOAD_IMG =1 , PREDICT = 2, RESET = 3;
+    String image_path;
+
     private static final String[] PADDLE_MODEL = {
-            "Custom"//, "mobilenet_v2"
+            "Custom_11","Custom_Quant_11"//, "mobilenet_v2"
     };
 
 
@@ -72,20 +76,33 @@ public class MainActivity extends AppCompatActivity {
         readCacheLabelFromLocalFile();
     }
 
+    Button load_model, use_photo, start_photo, predict_btn, reset_btn;
+    LinearLayout upload_img_layout;
+
     // initialize view
     private void init_view() {
         request_permissions();
         show_image = (ImageView) findViewById(R.id.show_image);
-        result_text = (TextView) findViewById(R.id.result_text);
+
+        final View bottom_sheet = (View) findViewById(R.id.bottomSheet);
+
+        result_text = bottom_sheet.findViewById(R.id.result_text);
         result_text.setMovementMethod(ScrollingMovementMethod.getInstance());
-        Button load_model = (Button) findViewById(R.id.load_model);
-        Button use_photo = (Button) findViewById(R.id.use_photo);
-        Button start_photo = (Button) findViewById(R.id.start_camera);
+
+        load_model = bottom_sheet.findViewById(R.id.load_model);
+        upload_img_layout = bottom_sheet.findViewById(R.id.upload_img_layout);
+        use_photo = bottom_sheet.findViewById(R.id.gallery);
+        start_photo = bottom_sheet.findViewById(R.id.start_camera);
+        predict_btn = bottom_sheet.findViewById(R.id.predict_btn);
+        reset_btn = bottom_sheet.findViewById(R.id.reset_btn);
+        bottomView(LOAD_MODEL);
 
         load_model.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDialog();
+                load_model("Custom_Quant_11");//
+                //load_model("Custom_Quant_11");//PADDLE_MODEL[model_index]);
+//                showDialog();
             }
         });
 
@@ -139,6 +156,45 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        predict_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                predict_image(image_path);
+            }
+        });
+
+        reset_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                result_text.setText("");
+                Glide.with(MainActivity.this).load(R.drawable.image)//camera_image_path).apply(options)
+                        .into(show_image);
+                bottomView(UPLOAD_IMG);
+            }
+        });
+    }
+
+    public void bottomView(int action){
+        hideButtons();
+        if(action == LOAD_MODEL)
+            load_model.setVisibility(View.VISIBLE);
+        else if(action == UPLOAD_IMG)
+            upload_img_layout.setVisibility(View.VISIBLE);
+        else if(action == PREDICT)
+            predict_btn.setVisibility(View.VISIBLE);
+        else if(action == RESET)
+            reset_btn.setVisibility(View.VISIBLE);
+        else
+            load_model.setVisibility(View.VISIBLE);
+    }
+
+    public void hideButtons(){
+        result_text.setVisibility(View.INVISIBLE);
+        load_model.setVisibility(View.GONE);
+        upload_img_layout.setVisibility(View.GONE);
+        predict_btn.setVisibility(View.GONE);
+        reset_btn.setVisibility(View.GONE);
     }
 
     /**
@@ -158,13 +214,19 @@ public class MainActivity extends AppCompatActivity {
     private void load_model(String model) {
         try {
             tflite = new Interpreter(loadModelFile(model));
-            Toast.makeText(MainActivity.this, model + " model load success", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "Model loaded successfully.", Toast.LENGTH_SHORT).show();
+
             Log.d(TAG, model + " model load success");
             tflite.setNumThreads(4);
             load_result = true;
+            bottomView(UPLOAD_IMG);
         } catch (IOException e) {
-            Toast.makeText(MainActivity.this, model + " model load fail", Toast.LENGTH_SHORT).show();
-            Log.d(TAG, model + " model load fail");
+            //Toast.makeText(MainActivity.this, "Something went wrong,\nPlease try again later..", Toast.LENGTH_SHORT).show();
+            result_text.setText("Something went wrong,\nPlease try again later..");
+            result_text.setTextColor(getResources().getColor(R.color.red));
+            result_text.setVisibility(View.VISIBLE);
+
+            Log.d(TAG, "Model load fail");
             load_result = false;
             e.printStackTrace();
         }
@@ -190,7 +252,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 model_index = which;
-                load_model("Custom_Quant_11");//PADDLE_MODEL[model_index]);
+                load_model(PADDLE_MODEL[model_index]);//"Custom_Quant_11");//
+                //load_model("Custom_Quant_11");//PADDLE_MODEL[model_index]);
                 dialog.dismiss();
             }
         });
@@ -218,7 +281,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        String image_path;
+
         RequestOptions options = new RequestOptions().skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE);
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
@@ -234,7 +297,8 @@ public class MainActivity extends AppCompatActivity {
                     // get image path from uri
                     image_path = PhotoUtil.get_path_from_URI(MainActivity.this, image_uri);
                     // predict image
-                    predict_image(image_path);
+                    bottomView(PREDICT);
+//                    predict_image(image_path);
                     break;
                 case START_CAMERA:
                     // show photo
@@ -245,7 +309,8 @@ public class MainActivity extends AppCompatActivity {
 
                     image_path = PhotoUtil.get_path_from_URI(MainActivity.this, image_uri_2);
                     // predict image
-                    predict_image(image_path);//camera_image_path);
+                    bottomView(PREDICT);
+//                    predict_image(image_path);//camera_image_path);
                     break;
             }
         }
@@ -277,12 +342,26 @@ public class MainActivity extends AppCompatActivity {
             //System.arraycopy(labelProbArray[0], 0, results, 0, labelProbArray.length);
             // show predict result and time
             int r = get_max_result(results);
-            String show_text = "result：" + r + "\nname：" + resultLabel.get(r) + "\nprobability：" + results[r]*100 + "\ntime：" + time + "ms";
+            //String show_text = "result：" + r + "\nname：" + resultLabel.get(r) + "\nprobability：" + results[r]*100 + "\ntime：" + time + "ms";
+            if(resultLabel.get(r).equalsIgnoreCase("Negative")){
+                result_text.setText("Negative: Patient X-ray report seems Covid Negative");
+                result_text.setTextColor(getResources().getColor(R.color.green));
+            }else{
+                result_text.setText("Positive: Patient X-ray report seems Covid Positive");
+                result_text.setTextColor(getResources().getColor(R.color.red));
+            }
             //String show_text = "result：" + r + "\nname：" + resultLabel.get(r) + "\ntime：" + time + "ms";
-            result_text.setText(show_text);
+            //result_text.setText(show_text);
+
+            bottomView(RESET);
+            result_text.setVisibility(View.VISIBLE);
         } catch (Exception e) {
             System.out.println("Error Predicting result:"+e);
             e.printStackTrace();
+            result_text.setText("Something went wrong,\nPlease try again later..");
+            result_text.setTextColor(getResources().getColor(R.color.red));
+            result_text.setVisibility(View.VISIBLE);
+            bottomView(RESET);
         }
     }
 
