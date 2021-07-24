@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+
+    </data>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:id="@+id/bottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="15dp"
+    app:layout_behavior="com.matrix.aimlcapstone.utils.LockableBottomSheetBehavior"
+    android:background="@drawable/tab_bg_2">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:elevation="20dp"
+        android:orientation="vertical"
+        android:weightSum="4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+        <!--android:background="@drawable/tab_bg"-->
+        <!--android:background="@drawable/tab_bg"-->
+       <TextView
+           android:id="@+id/predictions"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_margin="5dp"
+           android:textSize="24dp"
+           android:textStyle="bold"
+           android:textColor="@color/black"
+           android:text="Predictions"/>
+
+        <TextView
+            android:id="@+id/result_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:textSize="20dp"
+            android:layout_marginBottom="15dp"
+            android:text=""
+             />
+
+
+        <Button
+            android:id="@+id/load_model"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#FFFFFF"
+            android:textAllCaps="false"
+            android:background="@drawable/load_model_btn_bg"
+            android:text="Load The Model" />
+
+        <LinearLayout
+            android:id="@+id/upload_img_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:weightSum="1">
+
+        <Button
+            android:id="@+id/gallery"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:layout_margin="5dp"
+            android:padding="10dp"
+            android:layout_gravity="center"
+            android:textColor="#FFFFFF"
+            android:textAllCaps="false"
+            android:background="@drawable/upload_img_btn_bg"
+            android:text="Gallery" />
+
+            <Button
+                android:id="@+id/start_camera"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:padding="10dp"
+                android:layout_margin="5dp"
+                android:layout_gravity="center"
+                android:textColor="#FFFFFF"
+                android:textAllCaps="false"
+                android:background="@drawable/upload_img_btn_bg"
+                android:text="Camera" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/predict_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#FFFFFF"
+            android:textAllCaps="false"
+            android:background="@drawable/predict_btn_bg"
+            android:text="Predict" />
+
+        <Button
+            android:id="@+id/reset_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#FFFFFF"
+            android:textAllCaps="false"
+            android:background="@drawable/reset_btn_bg"
+            android:text="Reset" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

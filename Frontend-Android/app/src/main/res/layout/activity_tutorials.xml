@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/home_color">
+
+
+    <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp">
+        <TextView
+            android:id="@+id/tvHint"
+            style="@style/NormalTextStyle"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:gravity="center"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:text="FYI"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp">
+
+
+            <TextView
+                android:id="@+id/tvSkip"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                style="@style/NormalTextStyle"
+                android:layout_height="wrap_content"
+                android:text="@string/skip"
+                android:textStyle="bold"
+                android:textAlignment="viewStart"
+                android:textColor="@color/end_color"
+                android:gravity="start" />
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:layout_height="10dp"/>
+
+
+            <ImageView
+                android:id="@+id/img1"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_gravity="center"
+                android:background="@drawable/selected_dot"/>
+            <ImageView
+                android:id="@+id/img2"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_gravity="center"
+                android:background="@drawable/default_dot"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="10dp"/>
+            <TextView
+                android:id="@+id/tvNext"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                style="@style/NormalTextStyle"
+                android:textStyle="bold"
+                android:layout_height="wrap_content"
+                android:text="@string/next"
+                android:textAlignment="viewEnd"
+                android:textAllCaps="true"
+                android:textColor="@color/end_color"
+                android:gravity="end" />
+
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
+
+</layout>
