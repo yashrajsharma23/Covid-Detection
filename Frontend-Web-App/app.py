@@ -2,30 +2,41 @@ import base64
 import numpy as np
 import io
 from PIL import Image
-from pathlib import Path
-
 import re
 
-# pip install tensorflow == 2.2.0
-import tensorflow as tf
-
-from tensorflow import keras
-# from keras.models import Sequential, load_model
 from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing.image import ImageDataGenerator, img_to_array
+from tensorflow.keras.preprocessing.image import img_to_array
 from flask import request, render_template
 from flask import jsonify
 from flask import Flask
 
 app = Flask(__name__, template_folder='./templates', static_folder='./static')
 
-
-# https://deeplizard.com/learn/video/XgzxH6G-ufA
+# PROJECT_NAME = 'covid_detection'
+# CREDENTIALS = 'static/covid-google-service.json'
+# MODEL_PATH = 'gs://covid_detection/Custom_11.h5'
 
 def get_model():
     global model
-    model = load_model('model/Custom_11.h5')  # 'VGG16_cats_and_dogs.h5')
-    print(" * Model loaded!")
+    try:
+        model = load_model('model/Custom_11.h5')  # 'VGG16_cats_and_dogs.h5')
+        response = {
+            'response': {
+                'success': 'Model Loaded Successfully.'
+            }
+        }
+        print(" * Model loaded!")
+
+        print(response)
+        return jsonify(response)
+    except Exception as e:
+        response = {
+            'response': {
+                'error': 'Model Loading failed.\nSomething went wrong please try again later..'
+            }
+        }
+        print(response)
+        return jsonify(response)
 
 def preprocess_image(image, target_size):
     if image.mode != "RGB":
@@ -38,10 +49,12 @@ def preprocess_image(image, target_size):
     image = np.expand_dims(image, axis=0)
     return image
 
+# get_model()
 
-print(" * Loading Keras model...")
-get_model()
-
+@app.route("/loadModel", methods=['GET','POST'])
+def loadModel():
+    print(" * Loading Keras model...")
+    return get_model()
 
 @app.route("/predict", methods=['GET', 'POST'])  # ,"GET"])
 def predict():
@@ -57,13 +70,13 @@ def predict():
     image = Image.open(io.BytesIO(decoded))
     processed_image = preprocess_image(image, target_size=(256, 256))
 
-    respone = '';
-    isNegative = True;
+    respone = ''
+    isNegative = True
 
     prediction = model.predict(processed_image).tolist()
     negative = prediction[0][0] * 100
     positive = prediction[0][1] * 100
-
+    print('Negative',negative,':', 'Positive:',positive)
     if float(prediction[0][0])>float(prediction[0][1]):
         #respone = 'Patient X-ray report seems {}% Covid Negative'.format(negative)
         respone = 'Patient X-ray report seems Covid Negative'
@@ -100,4 +113,5 @@ def running():
 
 if __name__ == 'app':
     print(__name__)
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    #app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run()
