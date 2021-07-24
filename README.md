@@ -27,12 +27,14 @@ Covid-Detection/Frontend-web-App/model/
 ------------------------------------------
 ### Android UI:
 #### Splash screen
-![Android-Splash](https://user-images.githubusercontent.com/39268487/126876847-9c01bc18-546d-46ee-8598-4a18b7da0371.jpg)
+![Android-Splash](https://user-images.githubusercontent.com/39268487/126877057-3dccfef3-cf2e-40e1-85c8-e8e332c01c8a.jpg)
+
 
 #### Landing screen
 ![Android-Main](https://user-images.githubusercontent.com/39268487/126876856-4bb04528-b354-4639-8c21-d0b207bf57ae.jpg)
 
 #### Predicting Results
-![Android-Main](https://user-images.githubusercontent.com/39268487/126876861-8aa55bc9-cc1c-439a-a1b9-bbf0936870c2.jpg)
+![Android-Predict](https://user-images.githubusercontent.com/39268487/126877067-cfb461b2-6990-4b79-9ee2-4f29f213215d.jpg)
+
 
 
