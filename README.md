@@ -1,5 +1,5 @@
-# Covid-Detection
-Can detect Covid based on X-ray images &amp; other important features by taking as input from user
+# Covid-Detection - Web App: https://covid-detection.azurewebsites.net/
+- Can detect Covid based on X-ray images &amp; other important features by taking as input from user
 
 - Predicting Noval Corona virus, and Healthy patient from X-ray scans using Keras and Scikit Learn
 
