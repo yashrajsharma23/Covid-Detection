@@ -209,24 +209,28 @@ function loadModel(){
         if (response.ok) {
             response.json().then(json => {
                 console.log(json)
-                isModelLoaded=true;
+                console.log('Model Loaded: Inside Ok: 1', isModelLoaded)
                 var response = json.response
                 if(response.hasOwnProperty("success")){
+                    isModelLoaded=true;
                     success_load_model(json.response.success)
                 }else{
                     error_fun(json.response.error);
                 }
             });
         } else {
+            console.log('Model Loaded: Inside else: 2', isModelLoaded)
             error_fun("Could not reach the API: " + response.statusText+"." +
-                "<br>Something went wrong,\bPlease try again later");
+                "<br>Something went wrong,Please try again later");
             // throw new Error("Could not reach the API: " + response.statusText);
         }
     }).then(function (data) {
+        console.log('Model Loaded: Inside then: 3', isModelLoaded)
         print(data.toString())
     }).catch(function (error_msg) {
+        console.log('Model Loaded: Inside catch: 4', isModelLoaded)
         error_fun(error_msg.message);
-        console.log('error catch: ', error_msg);
+        console.log('error catch: ', error_msg.message);
     });
 }
 
@@ -328,6 +332,17 @@ function error_fun(message) {
     pos_tag.style.display = "none";
     pred_tag.style.display='none';
 
+    console.log('Model Loaded:', isModelLoaded)
+     if(isModelLoaded){
+        load_model.style.display='none';
+        predict_btn.style.display='block';
+        reset_btn.style.display='none';
+    }else{
+        load_model.style.display='none';
+        predict_btn.style.display='none';
+        reset_btn.style.display='block';
+    }
+
     if(message != null){
         error.innerHTML = message;
         error_tag.style.display = "block";
@@ -336,5 +351,6 @@ function error_fun(message) {
         error_tag.style.display = "none";
         error.style.display = "none";
     }
+
     hideLoading();
 }

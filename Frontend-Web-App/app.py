@@ -32,7 +32,7 @@ def get_model():
     except Exception as e:
         response = {
             'response': {
-                'error': 'Model Loading failed.\nSomething went wrong please try again later..'
+                'error': 'Model Loading failed.<br>Something went wrong, please try again later..'
             }
         }
         print(response)
